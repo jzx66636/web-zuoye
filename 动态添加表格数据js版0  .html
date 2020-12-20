@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="../css/动态添加表格数据js.css"> -->
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        background-color:rgb(203, 218, 195)
+    }
+
+    #bc {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+    }
+
+    #wrap {
+        width: 500px;
+        height: 300px;
+        background-color: rgba(97, 97, 55, 0.445);
+        border: solid 3px;
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #wrap #form {
+        /* width: 400px; */
+        border: 1px solid black;
+        cellspacing: 0px;
+        border-collapse: collapse;
+        position: absolute;
+        left: 50%;
+        top: 30%;
+        transform: translateX(-50%) translateY(-50%);
+    }
+
+    #wrap #form tr,
+    #wrap #form th,
+    #wrap #form td {
+        border: 1px solid black;
+        height: 30px;
+    }
+
+    #wrap #alert {
+        width: 300px;
+        height: 120px;
+        background-color: rgb(93, 61, 182);
+        position: absolute;
+        padding: 0px 10px;
+        border: black solid 3px;
+        left: 50%;
+        bottom: -10%;
+        transform: translateX(-50%) translateY(-50%);
+        /* text-align: right; */
+        display: none;
+    }
+
+    #btn {
+        width: 80px;
+        height: 50px;
+        position: absolute;
+        background-color: rgba(97, 97, 55, 0.445);
+        bottom: 45px;
+        left: 50%;
+        border-radius: 10px;
+        transform: translateX(-50%);
+    }
+
+#btn:hover{
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.486);
+    border-radius: 20px;
+}
+    #close {
+        position: absolute;
+        right: 5px;
+    }
+    #sub:hover{
+        box-shadow: 3px 3px rgba(0, 0, 0, 0.486);
+    border-radius: 20px;
+    }
+    #sub {
+        width: 80px;
+        margin-left: 120px;
+        margin-top: 5px;
+        border-radius:8px;
+        background-color: rgba(97, 97, 55, 0.445);
+    }
+    h1{
+        margin-top: 10%;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div id="bc">
+    </div>
+    <div id="wrap">
+        <button id="btn">获取数据</button>
+        <table id="form">
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>url</th>
+                    <th>type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="get">
+                    <td>淘宝</td>
+                    <td>www.taobao.com</td>
+                    <td><a href="#">删除</a></td>
+                </tr>
+                <tr class="get">
+                    <td>京东</td>
+                    <td>www.jd.com</td>
+                    <td><a href="#">删除</a></td>
+                </tr>
+                <tr class="get">
+                    <td>百度</td>
+                    <td>www.baidu.com</td>
+                    <td><a href="#">删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="alert">
+            <div class="alert-top">
+                <span>添加数据</span>
+                <span id="close">X</span>
+            </div>
+            <div class="item">
+                <label class="al" for="name">请输入name:</label>
+                <input class="txt" type="text" id="name" placeholder="请输入name">
+            </div>
+            <br>
+            <div class="item">
+                <label class="al" for="url">请你输入url:</label>
+                <input class="txt" type="text" id="url" placeholder="请输入url">
+            </div>
+            <div class="submit">
+                <input type="button" value="添加" id="sub">
+            </div>
+        </div>
+    </div>
+    <h1>动态增添数据</h1>
+    <script>
+        window.onload = function () {
+            // 获取所有元素
+            var dele = document.getElementsByTagName('a');//获取删除的元素
+            var trValue = document.querySelectorAll('.get');//获取表格的整一行
+            var tbody = document.getElementsByTagName('tbody')[0];//获取表格体
+            var submit = document.querySelector('#sub');//获取新增表的提交按钮
+            var name = document.querySelector('#name');//获取新增表中的name
+            var url = document.querySelector('#url');//获取新增表中的url
+            var bc = document.getElementById('bc');//获取背景
+            var btn = document.getElementById('btn');//获取按钮
+            var al = document.getElementById('alert')//获取弹窗
+            var close = document.getElementById('close')//获取关闭按钮
+            // 删除表格整行
+            function deleteFun() {
+                for (var i = 0; i < dele.length; i++) {
+                    dele[i].onclick = function () {
+                        this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
+                    };
+                };
+            };
+            //none变block
+            function scBlcok() {
+                bc.style.cssText = 'width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);display: block;';
+                al.style.display = 'block';
+            }
+            //block变none
+            function disBlock() {
+                bc.style.cssText = 'width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);display: none;';
+                al.style.display = 'none';
+            }
+            deleteFun();
+            btn.onclick = function () {
+                //获取数据时，背景变暗，出现弹窗
+                scBlcok()
+                // 添加元素
+                sub.onclick = function () {
+                    if(name.value && url.value){
+                    var tr = document.createElement('tr');
+                    tr.className = 'get';
+                    tr.innerHTML = '<td>' + name.value + '</td><td>' + url.value + '</td><td><a href="#">删除</a></td>';
+                    tbody.appendChild(tr);
+                    deleteFun();
+                }else{
+                    alert('请不要留空')
+                }
+                    disBlock();
+                };
+                close.onclick = function () {
+                    disBlock();
+                }
+            };
+
+        }
+    </script>
+</body>
+
+</html>
